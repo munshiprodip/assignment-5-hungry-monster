@@ -15,24 +15,34 @@ document.getElementById('searchForm').addEventListener('submit', function(e){
 
 // Fetch data from API with search input
 const searchFood = searchInput =>{
-    document.getElementById("searchForm").reset();
-    const url = `https://www.themealdb.com/api/json/v1/1/search.php?s=${searchInput}`
-    fetch(url)
-    .then(response => response.json())
-    .then(data => {
-        if (data.meals===null) {
-            const message = `
-                <div class="col-md-12 text-center text-danger">
-                    <h3>!!!Ops... No food found with the name "${searchInput}"</h3>
-                </div>`
+    if (searchInput) {
+        document.getElementById("searchForm").reset();
+        const url = `https://www.themealdb.com/api/json/v1/1/search.php?s=${searchInput}`
+        fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            if (data.meals===null) {
+                const message = `
+                    <div class="col-md-12 text-center text-danger">
+                        <h3>!!!Ops... No food found with the name "${searchInput}"</h3>
+                    </div>`
 
-            document.getElementById('row').innerHTML = message
-            return false
-        }else{
-            displayFoods(data.meals)
-        }
-        
-    })
+                document.getElementById('row').innerHTML = message
+                return false
+            }else{
+                displayFoods(data.meals)
+            }
+            
+        })
+    }else{
+        const message = `
+            <div class="col-md-12 text-center text-danger">
+                <h3>Nothing searched.... Please enter food name.</h3>
+            </div>`
+
+        document.getElementById('row').innerHTML = message
+        return false
+    }
 }
 
 // Display food items to DOM
