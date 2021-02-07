@@ -114,11 +114,12 @@ const displayDetails = foods =>{
 // Create Ingredient list without empty value
 const ingredientList = food =>{
     let li = ''
-    
+    console.log(food)
     for (let i = 1; i <= 20; i++) {
-        let strIngredient = 'strIngredient'+i
+        const strIngredient = 'strIngredient'+i
+        const strMeasure = 'strMeasure'+i
         if(food[strIngredient]){
-            li = li + `<li><span><i class="fas fa-check-square text-warning"></i></span> ${food[strIngredient]}</li>`;
+            li = li + `<li><span><i class="fas fa-check-square text-warning"></i> </span> ${food[strMeasure]}  ${food[strIngredient]}</li>`;
         }
     }
     return li
