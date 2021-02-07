@@ -13,6 +13,16 @@ document.getElementById('searchForm').addEventListener('submit', function(e){
     searchFood(searchInput)
 })
 
+// Display messages
+const displayMessage = message =>{
+    document.getElementById('message').innerHTML = message
+}
+
+// Clear search result display
+const clearDisplay = () =>{
+    document.getElementById('displayResult').innerHTML = ""
+}
+
 // Fetch data from API with search input
 const searchFood = searchInput =>{
     if (searchInput) {
@@ -22,34 +32,30 @@ const searchFood = searchInput =>{
         .then(response => response.json())
         .then(data => {
             if (data.meals===null) {
-                const message = `
-                    <div class="col-md-12 text-center text-danger">
-                        <h3>!!!Ops... No food found with the name "${searchInput}"</h3>
-                    </div>`
-
-                document.getElementById('row').innerHTML = message
+                clearDisplay()
+                const message = `<h3>!!!Ops..."${searchInput}" <br/> This dish is not currently cooked. <br/> Do you like chicken, we have lots of chicken items.</h3>`
+                displayMessage(message)
                 return false
             }else{
+                clearDisplay()
+                const message = `<h3>${searchInput} ...?? Yeah !!... <br/> Your favorite dish is ready to satisfy your appetite.  </h3>`
+                displayMessage(message)
                 displayFoods(data.meals)
-            }
-            
+                return false
+            } 
         })
     }else{
-        const message = `
-            <div class="col-md-12 text-center text-danger">
-                <h3>Nothing searched.... Please enter food name.</h3>
-            </div>`
-
-        document.getElementById('row').innerHTML = message
+        clearDisplay()
+        const message = `<h3>I think you are too much hungry, Forgot to enter food names. <br/> Please enter at least one character...</h3>`
+        displayMessage(message)
         return false
     }
 }
 
 // Display food items to DOM
 const displayFoods = foods =>{
-    const row = document.getElementById('row')
-    row.innerHTML = ""
-    
+    clearDisplay()
+    const displayResult = document.getElementById('displayResult')
     foods.forEach(food => {
         const column = document.createElement('div')
         column.className = "col-md-3 food-item my-3 "
@@ -63,7 +69,7 @@ const displayFoods = foods =>{
         </div>
         `
         column.innerHTML = foodContent
-        row.appendChild(column)
+        displayResult.appendChild(column)
     });
 }
 
@@ -82,9 +88,11 @@ const displayDetails = foods =>{
         const foodDetails = `
         <div class="card w-100">
             <div class="row g-0">
+
                 <div class="col-md-6">
                     <img src="${food.strMealThumb}" class="card-img-top single-item-image" alt="...">
                 </div>
+
                 <div class="col-md-6">
                     <div class="card-body">
                         <h3 class="card-title">${food.strMeal} <span><button type="button" class="btn-close float-end" data-bs-dismiss="modal" aria-label="Close"></button></span></h3>
